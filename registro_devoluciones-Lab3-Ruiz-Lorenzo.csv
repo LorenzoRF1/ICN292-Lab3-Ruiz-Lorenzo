@@ -1,0 +1,16 @@
+﻿fecha,id_solicitud,sku,monto,dias_desde_compra,estado_producto,email_cliente,ruta,motivo,U,D,uf_valor,monto_uf
+2026-09-22T23:51:35.576Z,DEV-1116,TE-330,69980,5,abierto_sin_uso,cliente2@example.cl,REVISION,"Monto 69980 > U=56000, revisar en bodega",56000,21,40991.75,1.71
+2026-09-22T23:51:35.644Z,DEV-1115,AU-210,19990,3,sin_abrir,cliente1@example.cl,APROBACION,"En plazo (≤ 21 días), monto ≤ 56.000 y sin fallas: reembolso inmediato",56000,21,40991.75,0.49
+2026-09-22T23:51:35.678Z,DEV-1117,HV-050,24990,12,con_fallas,cliente3@example.cl,REVISION,"Producto con fallas, revisar en bodega",56000,21,40991.75,0.61
+2026-09-22T23:51:35.711Z,DEV-1118,MW-150,79990,4,sin_abrir,cliente4@example.cl,REVISION,"Monto 79990 > U=56000, revisar en bodega",56000,21,40991.75,1.95
+2026-09-22T23:51:35.767Z,DEV-1119,PL-120,45990,25,danado_por_uso,cliente5@example.cl,RECHAZO,Fuera de plazo: 25 días > D=21,56000,21,40991.75,1.12
+2026-09-22T23:51:36.946Z,DEV-1121,LV-330,289990,9,sin_abrir,cliente7@example.cl,REVISION,"Monto 289990 > U=56000, revisar en bodega",56000,21,40991.75,7.07
+2026-09-22T23:51:37.038Z,DEV-1120,AS-260,89990,2,con_fallas,cliente6@example.cl,REVISION,"Monto 89990 > U=56000, revisar en bodega",56000,21,40991.75,2.2
+2026-09-22T23:51:37.322Z,DEV-1122,PL-120,45990,2,sin_abrir,cliente8@example.cl,APROBACION,"En plazo (≤ 21 días), monto ≤ 56.000 y sin fallas: reembolso inmediato",56000,21,40991.75,1.12
+2026-09-22T23:51:37.348Z,DEV-1123,AU-210,39980,15,danado_por_uso,cliente9@example.cl,RECHAZO,Producto dañado por uso,56000,21,40991.75,0.98
+2026-09-22T23:51:37.710Z,DEV-1124,HV-050,49980,1,abierto_sin_uso,cliente10@example.cl,APROBACION,"En plazo (≤ 21 días), monto ≤ 56.000 y sin fallas: reembolso inmediato",56000,21,40991.75,1.22
+2026-09-22T23:51:38.902Z,DEV-1125,TE-330,34990,22,sin_abrir,cliente11@example.cl,RECHAZO,Fuera de plazo: 22 días > D=21,56000,21,40991.75,0.85
+2026-09-22T23:51:39.219Z,DEV-1126,MW-150,79990,8,con_fallas,cliente12@example.cl,REVISION,"Monto 79990 > U=56000, revisar en bodega",56000,21,40991.75,1.95
+2026-09-22T23:51:39.303Z,DEV-C01,CB-010,9990,1,sin_abrir,control01@example.cl,APROBACION,"En plazo (≤ 21 días), monto ≤ 56.000 y sin fallas: reembolso inmediato",56000,21,40991.75,0.24
+2026-09-22T23:51:39.438Z,DEV-C02,LV-330,289990,2,sin_abrir,control02@example.cl,REVISION,"Monto 289990 > U=56000, revisar en bodega",56000,21,40991.75,7.07
+2026-09-22T23:51:39.944Z,DEV-C03,MW-150,79990,29,abierto_sin_uso,control03@example.cl,RECHAZO,Fuera de plazo: 29 días > D=21,56000,21,40991.75,1.95

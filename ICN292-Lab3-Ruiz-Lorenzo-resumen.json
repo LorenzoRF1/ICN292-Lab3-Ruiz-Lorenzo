@@ -1,0 +1,341 @@
+{
+  "name": "ICN292-Lab3-Ruiz-Lorenzo-resumen",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 22
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2b8a03b5-0656-423f-aacc-541232de6d67",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "bBxhSx6T0bDpDQnd",
+          "mode": "list",
+          "cachedResultName": "registro_devoluciones",
+          "cachedResultUrl": "/projects/1QAAeTyw1BVjj9BQ/datatables/bBxhSx6T0bDpDQnd"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "8b74cbea-5af1-4d20-83b6-1dba3700aac1",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "45d538a7-1955-4564-85d5-27a6d4e8bb25",
+              "leftValue": "={{ $json.fecha }}",
+              "rightValue": "={{ $today }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "7bcc1e2d-ec6e-42a8-abce-92737ce78904",
+      "name": "Filter",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0929772f-148f-46ba-9362-4d32cdb32057",
+              "leftValue": "={{ $json.ruta }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        0
+      ],
+      "id": "8d3600d7-dc0e-4ab0-9819-95b2c8b60f8e",
+      "name": "If",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "id_solicitud"
+            },
+            {
+              "aggregation": "sum",
+              "field": "monto"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "=ruta",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "8f7bd433-990e-496d-8545-9d3bceab1ffd",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -208
+      ],
+      "id": "ed5b3d59-5a95-4e25-8240-8d25f99c6dbc",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1e0fbf45-f17a-4ad3-a8dc-c5c8ac83694c",
+              "name": "detalle",
+              "value": "={{ $json.data.map(r => `${r.ruta.trim()}: ${r.count_id_solicitud} solicitudes, $${r.sum_monto}`).join('<br>') }}",
+              "type": "string"
+            },
+            {
+              "id": "04097aaf-63d2-432e-962e-eb57fde284af",
+              "name": "total_solicitudes",
+              "value": "={{ $json.data.reduce((a, r) => a + r.count_id_solicitud, 0) }}",
+              "type": "string"
+            },
+            {
+              "id": "d323c344-9d59-4474-a369-63db9909700f",
+              "name": "monto_total",
+              "value": "={{ $json.data.reduce((a, r) => a + r.sum_monto, 0) }}",
+              "type": "string"
+            },
+            {
+              "id": "9a1c6448-bb91-4568-8843-d3e8b91b0a73",
+              "name": "tasa_aprobacion",
+              "value": "={{ (($json.data.find(r => r.ruta.trim() === 'APROBACION')?.count_id_solicitud ?? 0) / $json.data.reduce((a, r) => a + r.count_id_solicitud, 0) * 100).toFixed(1) }}%",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1328,
+        -208
+      ],
+      "id": "3c44b0d5-f55a-4cb8-bc23-b33319e3dec4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "lorenzofland@gmail.com",
+        "subject": "=AndesHogar, Resumen devoluciones {{ $today.toFormat('dd-MM-yyyy') }}",
+        "message": "=  <b>Solicitudes por ruta</b><br>{{ $json.detalle }}<br><br>   <b>Total del día:</b> {{ $json.total_solicitudes }} solicitudes, ${{ $json.monto_total }}<br>   <b>Tasa de aprobación automática:</b> {{ $json.tasa_aprobacion }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1552,
+        -208
+      ],
+      "id": "a37702eb-58a6-48c3-ba12-945cc1fec9bd",
+      "name": "Send a message",
+      "webhookId": "99be04db-21a0-4c5e-aa4b-4257cf70323d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "IdQJTqVp767BcStv",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "lorenzofland@gmail.com",
+        "subject": "=AndesHogar, Resumen {{ $today.toFormat('dd-MM-yyyy') }}, sin solicitudes",
+        "message": "Hoy no se registraron solicitudes de devolucion.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        48
+      ],
+      "id": "c6d63289-3600-44a2-911c-88014ecca359",
+      "name": "Send a message1",
+      "webhookId": "11c2aa87-c2a9-4a3a-a53f-fe96f11d7577",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "IdQJTqVp767BcStv",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "736c5578-5067-4ae1-946b-5fca83448335",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0b599026d9fa63b52a8247b1dcc4c56627d2d5b999a1f98fd0433b9930c22d92"
+  },
+  "nodeGroups": [],
+  "id": "BhQFPB8Pr7tqBXKN",
+  "tags": []
+}
