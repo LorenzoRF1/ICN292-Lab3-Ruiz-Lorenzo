@@ -1,0 +1,440 @@
+% \documentclass[a4paper]{article}
+% \usepackage[landscape]{geometry}
+% \usepackage[table]{xcolor} % Necesario para \rowcolor
+% \begin{document}
+
+% \section*{Hoja Horizontal}
+% Este documento está en orientación horizontal.
+
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{|l|r|r|}
+% \hline
+% \rowcolor[HTML]{EFEFEF} 
+% \textbf{Componente} & \textbf{Cto. Unitario (\$)} & \textbf{Cto. Total (\$)} \\ \hline
+% Materia Prima (cordones de fibras minerales o barreras de mampostería) & 62.600 & 1.502.400 \\ \hline
+% Materiales (sellantes, gomas, etc.)                                    & 300.000 & 300.000   \\ \hline
+% Maquinaria (nivelación y despeje)                                      & 700.000 & 3.500.000 \\ \hline
+% Mano de obra (nivelación, despeje e instalación)                       & 5.000.000 & 5.000.000 \\ \hline
+% Mantenimiento (inspección, limpieza, reparaciones menores)             & 250.000 & 500.000   \\ \hline
+% \rowcolor[HTML]{FFFF00} 
+% \textbf{Costo Total Implementación}                                    &          & \textbf{10.802.400} \\ \hline
+% \end{tabular}
+% \caption{Desglose de costos de implementación}
+% \end{table}
+
+
+% \end{document}
+
+
+
+
+\documentclass[11pt,letterpaper]{article}
+
+%%% LANGUAGE: Spanish
+\usepackage[spanish,english]{babel}
+\addto\shorthandsspanish{\spanishdeactivate{~<>}}
+
+%%% ENCODING
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{longtable}
+\usepackage{epsfig}
+
+%%
+%%%%GENERAL INFROMATION%%%%
+%%
+
+\newcommand{\theCampus}{Campus Vitacura}
+\newcommand{\theAssignment}{SIG}
+\newcommand{\therevision}{Lorenzo Ruiz}
+
+%%% PACKAGES
+\usepackage{booktabs} 	% for much better looking tables
+\usepackage{array} 		% for better arrays (eg matrices) in maths
+\usepackage{paralist} 	% very flexible & customizable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} 	% adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfigure} % make it possible to include more than one captioned figure/table in a single float
+
+% FECHA
+\usepackage{datetime}
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH], \THEYEAR}
+
+%%% PAGE DIMENSIONS
+\usepackage[margin=25mm,inner=30mm]{geometry} % to change the page dimensions
+
+
+%%% HEADERS & FOOTERS   %%%
+\usepackage{fancyhdr} 	% This should be set AFTER setting up the page geometry
+\pagestyle{fancy} 			% options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0.5pt} % customise the layout...
+
+\renewcommand{\footrulewidth}{0.5pt} % customise the layout...
+\lhead{\includegraphics[scale=.15]{Logos/header_utfsm.png}}\cfoot{}
+\cfoot{\textbf{\thepage}}
+\rfoot{\therevision}
+\lfoot{\theAssignment}\chead{}
+\rhead{}
+
+
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+%\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+\usepackage{float}
+
+\usepackage[numbers]{natbib}
+
+
+%%% TABLE OF CONTENTS APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+
+\makeatletter
+\def\tableofcontents{%
+ \newpage
+ \centerline{\large\scshape Tabla de Contenidos} 
+ \vspace*{0.3in}
+ \@mkboth{CONTENTS}{CONTENTS}
+ \@starttoc{toc}
+}
+\makeatother
+
+
+\usepackage{lipsum}
+\usepackage[section]{placeins}
+
+
+%------------------------------------------------------------------------------
+%%%% TITLE PAGE
+%------------------------------------------------------------------------------
+\begin{document}
+\selectlanguage{spanish}
+
+\begin{titlepage}
+\begin{figure}[H]
+\includegraphics[width = 0.4\linewidth]{Logos/logo_di.png}
+\hspace{144pt}
+\vspace{-70pt}
+\end{figure}
+\vspace{60mm}
+\begin{center}
+\hrule
+\vspace{2mm}
+{\Huge \textbf{\sc Laboratorio 3}}\\
+{\Large \sc{Automatización de procesos con n8n}}
+\vspace{2mm}
+\hrule
+\vspace{3cm}
+
+
+%%%%AUTHORS%%%%
+\centering
+
+{\textbf{Lorenzo Ruiz} \\
+{\small Ingeniería Civil Industrial, 202304619-1, \emph{lflandez@usm.cl}}\\
+{\small Repositorio: \href{https://github.com/LorenzoRF1/ICN292-Lab3-Ruiz-Lorenzo.git}{https://github.com/LorenzoRF1/ICN292-Lab3-Ruiz-Lorenzo.git} } \\
+}
+\vspace{3cm} 
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Parámetro} & \textbf{Valor} \\
+\midrule
+$S$& 026 \\
+Umbral de monto $U$& \$56.000 \\
+Plazo máximo $D$& 21 días \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vfill
+\textsc{\monthyeardate\today}\\[0.5cm]
+\textsc{\theCampus}
+\end{center}
+
+
+\clearpage
+
+\parindent=0mm
+
+
+\end{titlepage}
+%------------------------------------------------------------------------------
+%%%% ABSTRACT %%%%%------------------------------------------------------------------------------
+\begin{center}
+    
+
+\section*{Resumen ejecutivo}
+\end{center}
+Se construyo un workflow en n8n que busca automatizar el triage de las solicitudes del canal de venta en linea de AndesHogar SpA. La solucion tiene tres flujos: triage (con 12 nodos) que se encarga de recibir solicitudes, consultar valor UF, decidir ruta, guardar el resultado y responder; otro emisor, que se encarga de enviar las consultas; y uno de resumen, que junta todos los datos del dia y manda un correo.\\ 
+Con $S = 026$ resulto en $U = \$56.000$ y $D = 21$ días, las quince solicitudes quedaron en cuatro
+aprobaciones, siete revisiones en bodega y cuatro rechazos, sin datos inválidos, con un total de 
+\$1.251.820 y una tasa de aprobación automática de 26,7\%. Cada solicitud se procesa en unos dos
+segundos, frente a los días hábiles que demora actualmente. De cada una queda
+guardado su identificador, SKU, monto, ruta, motivo y los valores de $U$ y $D$ usados, por lo que se puede revisar fácilmente en caso de algún error.
+
+Las pruebas de la Parte C muestran hasta donde es capaz el sistema. Las reglas se aplican en el
+orden correcto y los casos límite funcionan: una solicitud con monto igual a $U$, o con días
+iguales a $D$, queda aprobada. Por otro lado montos escritos en palabras generan errores y una solicitud con un SKU inexistente se aprueba directamente si cumple las reglas. 
+
+Se recomienda seguir usando el workflow con una revision periodica, configurar un Error worflow cuando el flujo falle, y mientras tanto corregir y cerrar los huecos que posea el sistema actual.
+
+Todo lo anterior se puede revisar con los tres archivos json y el registro CSV, junto con las capturas en el repositorio GitHub:\url{https://github.com/LorenzoRF1/ICN292-Lab3-Ruiz-Lorenzo}.
+
+\newpage
+%
+%%------------------------------------------------------------------------------
+%%%% TABLE OF CONTENTS %%%%%------------------------------------------------------------------------------
+\tableofcontents
+\clearpage
+%\listoffigures
+%\clearpage 
+
+%%--------------------------------------------------
+%%% DOCUMENT %%%%
+%%--------------------------------------------------
+\newpage
+\section{Parte A Flujo de triage}
+\subsection{Flujo}
+El workflow de triage posee 12 nodos en total, la clasificacion de cada elemento se realizo unicamente con un nodo Switch en modo Rules junto con cuatro nodos Edit field siguiendo cada ruta; Rechazo, Revision, Datos invalidos, y se opto por usar la opcion FallBack Output para la ruta de aprobacion. 
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Triage.png}
+    \caption{Arquitectura del flujo de triage}
+    \label{fig:placeholder}
+\end{figure}
+
+
+El orden se escogió debido a que el nodo HTTP Request (Encargado de extraer el valor de la UF) es necesario antes de el nodo Preparar, ya que este construye el cuerpo del sistema, para posteriormente el Switch poder separar caso por caso.
+\\
+Otro dato a señalar es que se opto por registrar todos los datos antes de enviar el correo, ya que si el correo falla, la decisión ya quedo guardada en el registro.
+
+\subsection{Switch}
+En este nodo se fue poniendo uno por uno y en orden las distintas reglas estipuladas por la politica de la empresa, la primera que se cumple fija la ruta y detiene la evaluacion. Se opto por usar la salida de respaldo para todos los datos que no cumplen ningunas de las condiciones, correspondiendo a la ruta de APROBACIÓN.
+
+\begin{center}
+\begin{tabular}{clll}
+\toprule
+\# & \textbf{Condición} & \textbf{Compara con} & \textbf{Salida} \\
+\midrule
+1 & \texttt{body.id\_solicitud} · String is empty        & ---                 & CAMPO\_INVALIDO \\
+2 & \texttt{body.monto.toNumber()} · $\leq$              & 0                   & MONTO \_INVALIDO  \\
+3 & \texttt{body.dias\_desde\_compra.toNumber()} · $>$   & 21 ($=D$)           & RECHAZO\_PLAZO \\
+4 & \texttt{body.estado\_producto} · is equal to         & \texttt{danado\_por\_uso} & ESTADO\_RECHAZO \\
+5 & \texttt{body.monto.toNumber()} · $>$                 & 56000 ($=U$)        & REVISION\_MONTO \\
+6 & \texttt{body.estado\_producto} · is equal to         & \texttt{con\_fallas}      & REVISION\_FALLA \\
+-- & \texttt{Fallback Output}                             & ---                 & APROBACION \\
+\bottomrule
+\end{tabular}
+\end{center}
+\subsection{Paginas Externas}
+Se consulta en \url{https://mindicador.cl/api} mediante \texttt{HTTP Request}. Del JSON de respuesta se usa el campo \texttt{uf.valor}, que se almacena como
+\texttt{uf\_valor} y permite expresar cada monto en UF mediante
+\texttt{monto\_uf = monto / uf\_valor}. En la ejecución el
+valor fue \$40.991,75 por UF.
+
+
+\subsection{Tabla de Resultados}
+
+\begin{table}[H]
+  \centering
+  \caption{Resultado del triage de las 15 solicitudes, sacados de la Data Table.}
+  \small
+    \begin{tabular}{lrrlll}
+    \toprule
+    ID & Monto & Días & Estado & Ruta & Motivo \\
+    \midrule
+    DEV-1115 & 19.990  & 3  & sin\_abrir        & APROBACION & En plazo y bajo el umbral \\
+    DEV-1116 & 69.980  & 5  & abierto\_sin\_uso & REVISION   & Monto 69.980 $>$ U \\
+    DEV-1117 & 24.990  & 12 & con\_fallas       & REVISION   & Producto con fallas \\
+    DEV-1118 & 79.990  & 4  & sin\_abrir        & REVISION   & Monto 79.990 $>$ U \\
+    DEV-1119 & 45.990  & 25 & danado\_por\_uso  & RECHAZO    & Fuera de plazo: 25 días \\
+    DEV-1120 & 89.990  & 2  & con\_fallas       & REVISION   & Monto 89.990 $>$ U \\
+    DEV-1121 & 289.990 & 9  & sin\_abrir        & REVISION   & Monto 289.990 $>$ U \\
+    DEV-1122 & 45.990  & 2  & sin\_abrir        & APROBACION & En plazo y bajo el umbral \\
+    DEV-1123 & 39.980  & 15 & danado\_por\_uso  & RECHAZO    & Producto dañado por uso \\
+    DEV-1124 & 49.980  & 1  & abierto\_sin\_uso & APROBACION & En plazo y bajo el umbral \\
+    DEV-1125 & 34.990  & 22 & sin\_abrir        & RECHAZO    & Fuera de plazo: 22 días \\
+    DEV-1126 & 79.990  & 8  & con\_fallas       & REVISION   & Monto 79.990 $>$ U \\
+    DEV-C01  & 9.990   & 1  & sin\_abrir        & APROBACION & En plazo y bajo el umbral \\
+    DEV-C02  & 289.990 & 2  & sin\_abrir        & REVISION   & Monto 289.990 $>$ U \\
+    DEV-C03  & 79.990  & 29 & abierto\_sin\_uso & RECHAZO    & Fuera de plazo: 29 días \\
+    \bottomrule
+    \end{tabular}%
+  \label{tab:resultados}%
+\end{table}% 
+
+
+Los resultados se pueden resumir en 4 aprobaciones, 7 revisiones, 4 rechazos y 0 datos inválidos.
+El monto total procesado fue \$1.251.820 y la tasa de aprobación automática, 26,7\%.
+
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{ruta-aprobacion.png}
+    \caption{Workflow de ruta aprobacion}
+    \label{fig:placeholder}
+\end{figure}
+\subsection{URL de prueba y de produccion}
+El sistema n8n publica dos URL para el mismo webhook. La Test URL que solo acepta una llamada despues de ejecutar siendo de mucha ayuda a la hora de depurar y construir el sistema. La Production URL se necesita tener el workflow publicado y atiende a todas las solicitudes que le entregan, registrando cada una en Executions.\\ 
+La corrida de 15 solicitudes y las pruebas de la parte C se realizaron con la Production URL exceptuando la prueba de DEV-C01 que se realizo con la Test URL.
+
+\section{Parte B Flujo programado del resumen}
+\subsection{Estructura del resumen}
+El workflow \texttt{ICN292-Lab3-Ruiz-Lorenzo-resumen} tiene ocho nodos en total, teniendo un lector del registro, filtrado de fecha, un IF para determinar si hubo o no solicitudes, las ramas de resumen, y aviso.
+El Sunmmarize agrupa cada ruta y calcula el conteo de id\_solicitud para saber contabilizar cuantas solicitudes fueron en cada ruta, ademas de la suma de monto. 
+El nodo Aggregate junta las tres filas en un único ítem, haciendo de esta forma que se envié solamente un mensaje a excepción de uno por ruta. 
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Ruta} & \textbf{Solicitudes} & \textbf{Monto} \\
+\midrule
+APROBACION & 4  & \$125.950 \\
+REVISION   & 7  & \$924.920 \\
+RECHAZO    & 4  & \$200.950 \\
+\midrule
+\textbf{Total} & \textbf{15} & \textbf{\$1.251.820} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Sobre la frecuencia, el flujo se ejecuta una vez al día, a las 22:00. Se escogió esta hora ya que el servicio al cliente ya dejo de operar y el resumen llega con la información de todo el día. Si optáramos por usar una frecuencia horaria haria que gran parte de los correos estén vacíos o sean tantos que sean molestos de leer.
+
+Ademas como hicimos uso de un nodo filtro, activando la opción de Always Output Data. Ya que gracias a esta un un día sin solicitudes produce un ítem vació, y el nodo de IF detecta que no hay ruta, derivando a un correo en donde se pone explícitamente que no hubo solicitudes en ese día.
+
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{RESUME.png}
+    \caption{Arquitectura del flujo de Resume}
+    \label{fig:placeholder}
+\end{figure}
+
+
+\section{Parte C}
+\subsection{Entradas Invalidas}
+
+
+\begin{table}[H]
+  \centering
+  \caption{Entradas inválidas enviadas al flujo}
+    \begin{tabular}{lll>{\raggedright\arraybackslash}p{0.3\linewidth}}
+    \toprule
+    Caso & Carga & Comportamiento esperado & Comportamiento observado \\
+    \midrule
+    ERR-01 & \texttt{id\_solicitud} vacío & DATOS\_INVALIDOS & Ruta DATOS\_INVALIDOS, motivo Falta id\_solicitud \\
+    ERR-02 & \texttt{monto} con valor $-5000$ & DATOS\_INVALIDOS & Ruta DATOS\_INVALIDOS, motivo con el monto recibido \\
+    ERR-03 & \texttt{monto} no numérico & Falla de un nodo & Ejecución en error en el nodo Switch \\
+    \bottomrule
+    \end{tabular}%
+  \label{tab:invalidas}%
+\end{table}%
+\begin{itemize}
+    \item El ERR-03 rompe el nodo ya que la ejecucion termina en error junto con el mensaje \emph{cannot convert to number} en el nodo Switch, el dato llego bien al nodo, el problema fue a la hora de hacer la comparación dentro del Switch ya que se comparo un monto no numérico con uno numérico.
+\end{itemize}
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{error-conversion.png}
+    \caption{Error de conversión en el nodo Switch al recibir un monto no numérico.}
+    \label{fig:placeholder}
+\end{figure}
+
+
+
+\subsection{Los tres valores de On Error }
+\begin{center}
+\begin{tabular}{l>{\raggedright\arraybackslash}p{0.6\linewidth}}
+\toprule
+\textbf{Valor} & \textbf{Comportamiento} \\
+\midrule
+Stop Workflow & Detiene la ejecución; queda registrada en rojo. \\
+Continue (using error output) & Agrega una segunda salida por la que salen los ítems fallidos. \\
+Continue (using regular output) & El ítem sigue por la salida normal con un campo \texttt{error}. \\
+\bottomrule
+\end{tabular}
+\end{center}
+ Los nodos centrales que poseen toda la trazabilidad del sistema (tales como: Preparar, Switch, las rutas, Armar registro, Registrar y Responder) quedaron en Stop Workflow, ya que si alguno de estos falla,  la solicitud no se clasifica ni registra, ya que es mejor que aparezca el indicador visible rojo que una fila que nadie va a revisar hasta que sea demasiado tarde. Consultar Uf y Notificar usan Continue (using regular output), ya que no son de vital importancia, podemos prescindir del valor del UF y un correo rebotado no va a borrar o cambiar los registros. No se hizo uso de Continue (using error output) ya que simplemente no fue necesario para este sistema.  
+
+\subsection{Error Workflow}
+Este tipo de workflow se ejecuta automáticamente cuando otro falla, recibiendo los datos de la ejecución fallida. 
+Un flujo sin este workflow deja de funcionar sin que nadie se llegue a enterar, ya que el workflow corre sin que nadie lo este monitorizando y en caso de que algún nodo llegue a fallar, la ejecución queda en rojo en el historial y nadie lo termina revisando, ya que no se posee este workflow que puede convertir esa falla silenciosa en alguna notificación de error. 
+
+\subsection{Casos Bordes creados}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+\textbf{Caso} & \textbf{Condición} & \textbf{Ruta obtenida} & \textbf{Regla aplicada} \\
+\midrule
+LIM-01 & \texttt{monto} $= U =$ 56.000 & APROBACION & Regla 6 \\
+LIM-02 & \texttt{dias\_desde\_compra} $= D =$ 21 & APROBACION & Regla 6 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Ambos casos quedan dentro de lo aceptado, cumpliendo la regla 6. El Switch se encarga de comparar con la función \emph{is greater than} y no con \emph{greater than or equal}, por lo que no dispara ninguna regla y cae directamente en el fallback. En caso contrario LIM-01 habria salido por REVISION y LIM-02 por RECHAZO, y la politica se habria aplicado erroneamente en este caso.
+
+\begin{figure}[H]
+\centering
+\subfigure[LIM-01: monto igual a $U$]{\includegraphics[width=0.47\linewidth]{lim-01.png}}
+\hfill
+\subfigure[LIM-02: días iguales a $D$]{\includegraphics[width=0.47\linewidth]{lim-02.png}}
+\caption{Los dos casos de frontera quedan aprobados.}
+\end{figure}
+
+
+
+\subsection{Error de tipo, a proposito}
+Al cambiar el tipo de la condición del monto de \emph{Number} a \emph{String} y enviar DEV-C01
+(\$9.990), el workflow detiene el nodo con el mensaje \emph{``Wrong type: '9990' is a number but was
+expecting a string [condition 0, item 0]''}: la expresión \texttt{.toNumber()} entrega un número
+cuando la condición espera texto. Tras revertir la condición a Number, Dev-C01 vuelve a clasificar como Aprobacion.
+
+
+
+\subsection{Los dos casos que el flujo no pudo resolver}
+
+\texttt{"monto": "veinte mil"}. Los campos llegan en forma de texto y las reglas 2 y 5 comparan números, de modo que el Switch convierte con
+\texttt{.toNumber()} los números, pero cuando el texto no representa un número, la conversión falla y el nodo se cae. Para corregirlo el nodo necesitaría una validación antes del Switch (un IF) que compruebe con una expresión que el campo "monto" solo posee números y derivar a otra sección los que no cumplan este requisito. 
+
+\texttt{"sku": "ZZ-999"}. La solicitud pasa la validación y se clasifica como
+APROBACION, porque ninguna de las seis reglas mira el SKU, ya que se cumplen todas las reglas y el SKU inventado obtiene un reembolso automaticamente, para corregirlo habria que cargar un catalogo y que busque el SKU antes del Switch, y agregar la regla de "SKU inexistente $\rightarrow$ DATOS\_INVALIDOS". 
+
+\subsection{Recomendacion sobre el MVP}
+El flujo resuelve de buena manera el problema para el que fue hecho. El atasco estaba en el triage, y ahora cada solicitud se procesa y clasifica en segundos, a diferencia de la demora de dias del anterior. A su vez tiene una mejor trazabilidad ya que deja un resumen diario de el movimiento.\\ Aun con esto, lanzarlo oficialmente tal como esta es arriesgado, ya que como vimos anteriormente hay ciertos imputs que hace que genere distintos tipos de errores, como que no revise el contenido que escribe y que un SKU obtiene un reembolso automático. 
+
+Lo mejor seria adoptarlo como sistema definitivo después de hacer unas pruebas más exhaustivas y encontrar todas las falencias del actual y corregirlas, mientras eso no ocurra conviene seguir manteniendo este flujo andando pero realizar revisiones periódicamente a mano para encontrar ocasiones en donde el workflow tenga errores y atender esos casos por separado.
+
+
+
+\newpage
+
+%%--------------------------------------------------
+%%% BIBLIOGRAPHY %%%%
+%%--------------------------------------------------
+
+\begin{thebibliography}{X}
+
+\bibitem{n8n} \textsc{n8n}, \textit{n8n Docs}, documentación oficial,
+\url{https://docs.n8n.io}.
+
+\bibitem{switch} \textsc{n8n}, \textit{Switch node documentation},
+\url{https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.switch/}.
+
+\bibitem{mindicador} \textsc{mindicador.cl}, \textit{API de indicadores económicos de Chile},
+\url{https://mindicador.cl/api}.
+
+\end{thebibliography}
+
+\end{document}
